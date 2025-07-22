@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>💸 AI Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Spend Better</h1>
+        <p class="subtitle">Track smarter. Save stronger.</p>
+
+        <!-- Add Expense Form -->
+        <form method="POST" class="expense-form">
+            <input type="text" name="description" placeholder="Expense description" required>
+            <input type="number" name="amount" step="0.01" placeholder="Amount (₹)" required>
+            <select name="category">
+                <option disabled selected>Choose category</option>
+                <option>Food</option>
+                <option>Transport</option>
+                <option>Shopping</option>
+                <option>Bills</option>
+                <option>Others</option>
+            </select>
+            <button type="submit">Add Expense</button>
+        </form>
+
+        <!-- Filter & Stats -->
+        <div class="dashboard">
+            <form method="get" class="filter-form">
+                <label>Filter by category:</label>
+                <select name="filter" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option>Food</option>
+                    <option>Transport</option>
+                    <option>Shopping</option>
+                    <option>Bills</option>
+                </select>
+            </form>
+
+            <div class="stats">
+                <p><strong>Total Spent:</strong> ₹{{ total }}</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: {{ percent_used }}%"></div>
+                </div>
+                <p><strong>Budget:</strong> ₹{{ budget }}</p>
+            </div>
+        </div>
+
+        <!-- Alert -->
+        {% if alert %}
+        <div class="alert">{{ alert }}</div>
+        {% endif %}
+
+        <!-- Expense List -->
+        <ul class="expense-list">
+            {% for item in expenses %}
+                <li>
+                    <span>{{ item.date }} | ₹{{ item.amount }} - {{ item.description }}</span>
+                    <span class="category">({{ item.category }})</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
